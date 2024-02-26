@@ -1,5 +1,6 @@
 package ru.netology.test;
 
+import com.codeborne.selenide.Configuration;
 import io.qameta.allure.*;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.logevents.SelenideLogger;
@@ -8,10 +9,13 @@ import io.qameta.allure.selenide.AllureSelenide;
 import lombok.experimental.UtilityClass;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.chrome.ChromeOptions;
 import ru.netology.data.DataGenerator;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
@@ -30,6 +34,18 @@ public class CardDeliveryTest {
     @AfterAll
     static void tearDownAll() {
         SelenideLogger.removeListener("allure");
+    }
+
+    @BeforeEach
+    void setup() {
+        open("http://localhost:9999");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
+        Configuration.browserCapabilities = options;
     }
 
 
